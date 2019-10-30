@@ -1,17 +1,15 @@
 import { User } from '../../../../src/domain';
 import { BirthdayDiscountRule } from '../../../../src/domain/entities/discount-rules/birthday-discount-rule';
+import { userFixture } from '../../../fixtures/user';
 
 describe('BirthdayDiscountRule', () => {
   describe('isValid()', () => {
     describe('when is user birthday', () => {
       test('returns true', () => {
-        const userBirthDate = new Date('10/12/1994');
-        const user = new User('testeId', 'João', 'Silva', userBirthDate);
-
         const futureBirthday = new Date('10/12/2020');
 
         const discountValidityContext = {
-          user,
+          user: userFixture,
           todayDate: futureBirthday,
         };
 
@@ -25,11 +23,8 @@ describe('BirthdayDiscountRule', () => {
 
     describe('when is not user birthday', () => {
       test('returns false', () => {
-        const userBirthDate = new Date('10/12/1994');
-        const user = new User('testeId', 'João', 'Silva', userBirthDate);
-
         const discountValidityContext = {
-          user,
+          user: userFixture,
           todayDate: new Date(),
         };
 

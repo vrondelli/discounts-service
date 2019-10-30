@@ -3,6 +3,7 @@ import {
   User,
   BlackFridayDiscountRuleParameters,
 } from '../../../../src/domain';
+import { userFixture } from '../../../fixtures/user';
 
 describe('BlackFridayDiscountRule', () => {
   describe('isValid()', () => {
@@ -14,13 +15,11 @@ describe('BlackFridayDiscountRule', () => {
         };
 
         const blackFridayDiscountRule = new BlackFridayDiscountRule(parameters);
-        const userBirthDate = new Date('10/12/1994');
-        const user = new User('testeId', 'João', 'Silva', userBirthDate);
 
         const blackFridayDate = new Date('11/25/2019');
 
         const discountValidityContext = {
-          user,
+          user: userFixture,
           todayDate: blackFridayDate,
         };
 
@@ -38,13 +37,11 @@ describe('BlackFridayDiscountRule', () => {
         };
 
         const blackFridayDiscountRule = new BlackFridayDiscountRule(parameters);
-        const userBirthDate = new Date('10/12/1994');
-        const user = new User('testeId', 'João', 'Silva', userBirthDate);
 
         const blackFridayDate = new Date();
 
         const discountValidityContext = {
-          user,
+          user: userFixture,
           todayDate: blackFridayDate,
         };
 
