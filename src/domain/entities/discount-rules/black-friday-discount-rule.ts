@@ -12,11 +12,11 @@ export class BlackFridayDiscountRule implements IDiscountRule {
   private blackFridayMonth: number;
 
   constructor(parameters: BlackFridayDiscountRuleParameters) {
-    const dateObjectMonthSubthend = 1;
+    const dateObjectMonthSubtrahend = 1;
 
     this.blackFridayDay = parseInt(parameters.blackFridayDay, 10);
     this.blackFridayMonth =
-      parseInt(parameters.blackFridayMonth, 10) - dateObjectMonthSubthend;
+      parseInt(parameters.blackFridayMonth, 10) - dateObjectMonthSubtrahend;
   }
 
   public isValid(discountEvaluationContext: IDiscountValidityContext) {
