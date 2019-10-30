@@ -19,8 +19,8 @@ export class BlackFridayDiscountRule implements IDiscountRule {
       parseInt(parameters.blackFridayMonth, 10) - dateObjectMonthSubtrahend;
   }
 
-  public isValid(discountEvaluationContext: IDiscountValidityContext) {
-    const { todayDate } = discountEvaluationContext;
+  public isValid(discountValidityContext: IDiscountValidityContext) {
+    const { todayDate } = discountValidityContext;
 
     const todayDay = todayDate.getDate();
     const todayMonth = todayDate.getMonth();
