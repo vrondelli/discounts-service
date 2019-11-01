@@ -1,11 +1,14 @@
 import { IDiscountStrategy, IDiscountRule } from '../../../dsl';
 import { Discount } from '../../value-objects';
 import { Product } from '../product';
+import { DiscountStrategy } from '../../../decorators';
+import { CumulativeWithLimitDiscountStrategyName } from '../../../constants';
 
 export interface CumulativeWithLimitDiscountStrategyParameters {
   limit: string;
 }
 
+@DiscountStrategy(CumulativeWithLimitDiscountStrategyName)
 export class CumulativeWithLimitDiscountStrategy extends IDiscountStrategy {
   private limit: number;
 

@@ -1,10 +1,13 @@
 import { IDiscountStrategy, IDiscountRule } from '../../../dsl';
 import { Product } from '../product';
+import { DiscountStrategy } from '../../../decorators';
+import { BiggestWithLimitDiscountStrategyName } from '../../../constants';
 
 export interface BiggestWithLimitDiscountStrategyParameters {
   limit: string;
 }
 
+@DiscountStrategy(BiggestWithLimitDiscountStrategyName)
 export class BiggestWithLimitDiscountStrategy extends IDiscountStrategy {
   private limit: number;
 
