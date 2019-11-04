@@ -1,8 +1,5 @@
 import { IDiscountRule, IDiscountValidityContext } from '../../../dsl';
-import { DiscountRule } from '../../../decorators';
-import { BirthdayDiscountRuleName } from '../../../constants';
 
-@DiscountRule(BirthdayDiscountRuleName)
 export class BirthdayDiscountRule implements IDiscountRule {
   public readonly percentageValue = 5;
 

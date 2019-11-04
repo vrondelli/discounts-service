@@ -1,35 +1,35 @@
 import {
-  BlackFridayDiscountRuleName,
-  BirthdayDiscountRuleName,
-  CumulativeWithLimitDiscountStrategyName,
-  BiggestWithLimitDiscountStrategyName,
-} from './constants';
+  BlackFridayDiscountRule,
+  BirthdayDiscountRule,
+  CumulativeWithLimitDiscountStrategy,
+  BiggestWithLimitDiscountStrategy,
+} from './domain';
 
 // tslint:disable-next-line: no-var-requires
 require('dotenv').config();
 
 export default {
   discountRules: {
-    [BlackFridayDiscountRuleName]: {
+    [BlackFridayDiscountRule.name]: {
       enabled: process.env.BLACK_FRIDAY_DISCOUNT_ENABLED,
       parameters: {
         day: process.env.BLACK_FRIDAY_DAY,
         month: process.env.BLACK_FRIDAY_MONTH,
       },
     },
-    [BirthdayDiscountRuleName]: {
+    [BirthdayDiscountRule.name]: {
       enabled: process.env.BIRTHDAY_DISCOUNT_ENABLED,
     },
   },
   discountStrategies: {
-    default: CumulativeWithLimitDiscountStrategyName,
+    default: CumulativeWithLimitDiscountStrategy.name,
     activeStrategyName: process.env.ACTIVE_DISCOUNT_STRATEGY_NAME,
-    [CumulativeWithLimitDiscountStrategyName]: {
+    [CumulativeWithLimitDiscountStrategy.name]: {
       parameters: {
         limit: process.env.CUMULATIVE_WITH_LIMIT_STRATEGY_LIMIT,
       },
     },
-    [BiggestWithLimitDiscountStrategyName]: {
+    [BiggestWithLimitDiscountStrategy.name]: {
       parameters: {
         limit: process.env.BIGGEST_WITH_LIMIT_STRATEGY_LIMIT,
       },

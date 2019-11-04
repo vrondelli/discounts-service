@@ -1,13 +1,10 @@
 import { IDiscountRule, IDiscountValidityContext } from '../../../dsl';
-import { DiscountRule } from '../../../decorators';
-import { BlackFridayDiscountRuleName } from '../../../constants';
 
 export interface BlackFridayDiscountRuleParameters {
   blackFridayDay: string;
   blackFridayMonth: string;
 }
 
-@DiscountRule(BlackFridayDiscountRuleName)
 export class BlackFridayDiscountRule implements IDiscountRule {
   public readonly percentageValue = 10;
 

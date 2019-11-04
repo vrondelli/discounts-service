@@ -6,10 +6,6 @@ import {
   DiscountService,
 } from './domain';
 import config from './config';
-import {
-  DISCOUNT_RULE_METADATA,
-  DISCOUNT_STRATEGY_METADATA,
-} from './constants';
 import { IDiscountRule, IDiscountStrategy } from './dsl';
 import { ConcreteType } from '@cashfarm/lang';
 
@@ -27,18 +23,20 @@ const parseStringToBoolean = (stringValue: string) =>
 
 const getEnabledDiscountRules = (
   rules: Array<ConcreteType<IDiscountRule>>,
+  discountRulesConfiguration: any,
 ): IDiscountRule[] => {
-  const { discountRules } = config;
-
   const enabledRules = rules.filter(rule => {
-    const discountRuleName = Reflect.getMetadata(DISCOUNT_RULE_METADATA, rule);
+    const discountRuleName = rule.name;
 
-    return parseStringToBoolean(discountRules[discountRuleName].enabled);
+    return parseStringToBoolean(
+      discountRulesConfiguration[discountRuleName].enabled,
+    );
   });
 
   return enabledRules.map(Rule => {
-    const discountRuleName = Reflect.getMetadata(DISCOUNT_RULE_METADATA, Rule);
-    const ruleParameters = config.discountRules[discountRuleName].parameters;
+    const discountRuleName = Rule.name;
+    const ruleParameters =
+      discountRulesConfiguration[discountRuleName].parameters;
 
     return new Rule(ruleParameters);
   });
@@ -46,30 +44,35 @@ const getEnabledDiscountRules = (
 
 const getActiveDiscountStrategy = (
   strategies: Array<ConcreteType<IDiscountStrategy>>,
+  discountStrategiesConfiguration: any,
 ): IDiscountStrategy => {
-  const { discountStrategies } = config;
-
   const activeDiscountStrategyName =
-    Symbol.for(discountStrategies.activeStrategyName) ||
-    discountStrategies.default;
+    discountStrategiesConfiguration.activeStrategyName ||
+    discountStrategiesConfiguration.default;
 
   const discountStrategyParameters =
-    discountStrategies[activeDiscountStrategyName].parameters;
+    discountStrategiesConfiguration[activeDiscountStrategyName].parameters;
 
   const ActiveStrategy = strategies.find(strategy => {
-    const discountStrategyName = Reflect.getMetadata(
-      DISCOUNT_STRATEGY_METADATA,
-      strategy,
-    );
-
-    return discountStrategyName === activeDiscountStrategyName;
+    return strategy.name === activeDiscountStrategyName;
   });
 
   return new ActiveStrategy(discountStrategyParameters);
 };
 
-const enabledDiscountRules = getEnabledDiscountRules(allDiscountRules);
-const activeStrategy = getActiveDiscountStrategy(allDiscountStrategies);
+const {
+  discountRules: discountRulesConfig,
+  discountStrategies: discountStrategiesConfig,
+} = config;
+
+const enabledDiscountRules = getEnabledDiscountRules(
+  allDiscountRules,
+  discountRulesConfig,
+);
+const activeStrategy = getActiveDiscountStrategy(
+  allDiscountStrategies,
+  discountStrategiesConfig,
+);
 
 export const discountService = new DiscountService(
   enabledDiscountRules,
