@@ -4,9 +4,25 @@ import {
   CumulativeWithLimitDiscountStrategy,
   BiggestWithLimitDiscountStrategy,
 } from './domain';
+import { SnakeNamingStrategy } from './utils/snake_case_naming_strategy';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { UserTypeORMEntity } from './app/typeorm-entities/user.entity';
+import { ProductTypeORMEntity } from './app/typeorm-entities/product.entity';
 
 // tslint:disable-next-line: no-var-requires
 require('dotenv').config();
+
+const typeOrmConfig: TypeOrmModuleOptions = {
+  type: 'postgres',
+  host: process.env.POSTGRES_DATABASE_HOST,
+  port: parseInt(process.env.POSTGRES_DATABASE_PORT, 10),
+  username: process.env.POSTGRES_DATABASE_USERNAME,
+  password: process.env.POSTGRES_DATABASE_PASSWORD,
+  database: process.env.POSTGRES_DATABASE_DATABASE,
+  entities: [UserTypeORMEntity, ProductTypeORMEntity],
+  synchronize: true,
+  namingStrategy: new SnakeNamingStrategy(),
+};
 
 export default {
   discountRules: {
@@ -35,4 +51,5 @@ export default {
       },
     },
   },
+  typeOrmConfig,
 };
