@@ -1,6 +1,10 @@
-import { IDiscountRule, IDiscountStrategy } from '../../dsl';
-import { Product } from '../entities';
+import {
+  IDiscountRule,
+  IDiscountStrategy,
+  IDiscountValidityContext,
+} from '../../dsl';
 import { Discount } from '../value-objects';
+import { Product } from '../entities';
 
 export class DiscountService {
   constructor(
@@ -8,7 +12,22 @@ export class DiscountService {
     private discountStrategy: IDiscountStrategy,
   ) {}
 
-  public getDiscountForProduct(product: Product): Discount {
-    return this.discountStrategy.execute(this.discountRules, product);
+  public getDiscountForProduct(
+    discountValidityContext: IDiscountValidityContext,
+    product: Product,
+  ): Discount {
+    const validDiscountRules = this.getValidDiscountRules(
+      discountValidityContext,
+    );
+
+    return this.discountStrategy.execute(validDiscountRules, product);
+  }
+
+  private getValidDiscountRules(
+    discountValidityContext: IDiscountValidityContext,
+  ): IDiscountRule[] {
+    return this.discountRules.filter(rule =>
+      rule.isValid(discountValidityContext),
+    );
   }
 }
