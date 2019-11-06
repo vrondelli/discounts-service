@@ -7,7 +7,6 @@ import { UserTypeORMEntity } from '../typeorm-entities/user.entity';
 import { IProductDiscountRequest } from '../interfaces';
 import { DiscountService, Product } from '../../domain';
 import { IDiscountValidityContext } from '../../dsl';
-import { hydratePrimitive } from '@cashfarm/lang';
 
 @Controller()
 export class ProductDiscountService {
@@ -40,6 +39,18 @@ export class ProductDiscountService {
       product,
     );
 
-    return hydratePrimitive<Product>(product.updateDiscount(discount), {});
+    return this.getProductPlainObject(product.updateDiscount(discount));
+  }
+
+  private getProductPlainObject(product: Product) {
+    const plainProduct = {};
+
+    Object.entries(product).forEach(entry => {
+      const keyWithouPrefix = entry[0].replace('_', '');
+
+      plainProduct[keyWithouPrefix] = entry[1];
+    });
+
+    return plainProduct;
   }
 }
