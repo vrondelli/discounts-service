@@ -9,3 +9,8 @@ export const discountRuleFivePercent: IDiscountRule = {
   percentageValue: 5,
   isValid: () => true,
 };
+
+export const invalidDiscountRule: IDiscountRule = {
+  percentageValue: 5,
+  isValid: () => false,
+};
